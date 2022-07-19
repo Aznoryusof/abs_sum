@@ -5,7 +5,6 @@ main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(main_dir)
 
 import streamlit as st
-from transformers import pipeline
 from summarizer.test_data import *
 from examples import EXAMPLES
 import meta
@@ -15,43 +14,29 @@ from utils.st import (
 )
 
 SEED=99
-
-
-class AbsSum:
-    def __init__(self):
-        self.debug = False
-        self.summarizer = None
-        self.model_name_or_path = "knkarthick/MEETING_SUMMARY"
-
-    
-    def load(self):
-        self.summarizer = pipeline("summarization", model=self.model_name_or_path)
-
-
-    def summarize(self, text):
-        summary_text = self.summarizer(
-            text, max_length=200, 
-            min_length=5, do_sample=False
-        )[0]["summary_text"]
-
-        return summary_text
+SUMMARIZER_NAME = "bartmeeting" # or "pegasus"
 
 
 @st.cache(allow_output_mutation=True)
-def load_abs_summarizer():
+def load_abs_summarizer(summarizer_name):
+    if summarizer_name=="bartmeeting":
+        from summarizer.summarizer_bartmeeting import BartMeetingSummarizer as AbsSum
+    if summarizer_name=="pegasus":
+        from summarizer.summarizer_pegasus import PegasusSummarizer as AbsSum
+
     abs_summarizer = AbsSum()
     abs_summarizer.load()
 
     return abs_summarizer
 
 
-def main():
+def main(summarizer_name):
     st.set_page_config(
         page_title="Dialogue Summarization",
         layout="wide",
         initial_sidebar_state="expanded"
     )
-    abs_summarizer = load_abs_summarizer()
+    abs_summarizer = load_abs_summarizer(summarizer_name=summarizer_name)
     
     remote_css("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@600&display=swap")
     local_css(main_dir + "/app/asset/css/style.css")
@@ -103,6 +88,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(summarizer_name=SUMMARIZER_NAME)
 
 
