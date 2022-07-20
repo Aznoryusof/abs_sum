@@ -4,17 +4,39 @@ import sys
 main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(main_dir)
 
+import meta
+import argparse
 import streamlit as st
 from summarizer.test_data import *
 from examples import EXAMPLES
-import meta
 from utils.st import (
     remote_css,
     local_css
 )
 
 SEED=99
-SUMMARIZER_NAME = "bartmeeting" # or "pegasus"
+
+
+MODELS = ["bartmeeting", "pegasus"]
+
+def model(astring):
+    if astring not in MODELS:
+        raise ValueError
+    return astring
+
+
+parser = argparse.ArgumentParser(description='This app summarizes text conversations')
+parser.add_argument(
+    '--model', type=model, required=True,
+    help='model to use for summarization'
+)
+
+try:
+    args = parser.parse_args()
+except SystemExit as e:
+    os._exit(e.code)
+
+SUMMARIZER_NAME = args.model
 
 
 @st.cache(allow_output_mutation=True)
@@ -44,7 +66,7 @@ def main(summarizer_name):
     col1, col2 = st.columns([6, 4])
     with col2:
         with st.expander("Expand to view details about the model", expanded=True):
-            st.markdown(meta.STORY, unsafe_allow_html=True)
+            st.markdown(meta.STORY[SUMMARIZER_NAME], unsafe_allow_html=True)
 
     with col1:
         st.markdown(meta.HEADER_INFO, unsafe_allow_html=True)
