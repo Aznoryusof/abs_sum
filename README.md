@@ -39,3 +39,7 @@ For more information about the tools used, please refer to the following link:
 - https://streamlit.io/
 - https://www.anaconda.com/products/distribution
 - https://huggingface.co/docs/transformers/index
+
+
+## Version
+v1
