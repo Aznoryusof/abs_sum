@@ -1,62 +1,41 @@
 # Abstractive Summarization with Pre-trained Language Models
-A demo on applying pre-trained language models to carry out abstractive summarization on conversations.
+A demo on utilizing pre-trained language models to carry out abstractive summarization on conversations.
 
 ## Installation
-First, clone the repository to a folder of your choice. 
+Firstly, clone the repository to a folder of your choice (after installing git).
 
-Next install the necessary libraries
+Next install the necessary dependencies and libraries
 
-1. Create an environment with a specific version of Python and activate the environment
-	```
+1. Install the following dependencies:
+   - Anaconda
+
+2. Create an environment with a specific version of Python and activate the environment
+   ```
    conda create -n <env name> python=3.7.13
    ```
 
-2. Install the appropriate version of pytorch by following the instructions here
-	```
-   https://pytorch.org/
+3. Install libraries in environment.yml file
+   ```
+   conda env create -f environment.yml
    ```
 
-3. Install libraries in requirements.txt file
-   ```
-   pip install -r requirements.txt
-   ```
-
-Next download the necessary datasets that have been pre-processed by running the following script in the terminal
-in the project's main directory.
-
+Currently, two different models are implemented to carry out the summarization task. To run the streamlit demo, activate the conda environment created and in the code directory, run the following line of code with the name of the model as the --model argument: 
 ```
-python src\make_dataset.py
+streamlit run app/app.py -- --model bartmeeting
+```
+or
+```
+streamlit run app/app.py -- --model pegasus
 ```
 
-Then process the original dataset to obtain a dataset suitable for BERT fine-tuning by running the following script in the terminal
-in the project's main directory.
+Currently for conversation summarization, the pre-trained "bartmeeting" option performs better. On the first startup of the app, it takes a while for the script to completely download all the model artifacts from the server. The download happens only for the first time the app runs on the machine.
 
-```
-python src\process_data.py
-```
+## Code Structure
+This section has some explanations about the different directories.
+- app: contains scripts and assets for the UI
+- summarizer: contains the models used for the summarization task
 
-Finally run the following file (similar to the above steps), to carry out model fine-tuning.
-
-```
-python src\train.py
-```
-
-To make predictions on text, change the prediction_text variable in the config.py file, and run the following file
-
-```
-python src\evaluate\predict.py
-```
-
-## Project Objective
-Use Machine Learning and Natural Language Processing techniques to learn about the semantics and meanings of texts to distinguish hotel reviews that are negative or positive. This allows users to analyse sentiments of their customers at scale, and in real-time without much effort.
-
-## Data Source
-[515K Hotel Reviews Data in Europe](https://www.kaggle.com/jiashenliu/515k-hotel-reviews-data-in-europe/kernels)
-
-## Resources 
-The following resources were referenced to implement this project:
-- https://www.youtube.com/watch?v=_eSGWNqKeeY&t=1453s
-
-# Further Development Work
-- Building an app with Django
-- Integrating app with portfolio website 
+For more information about the tools used, please refer to the following link:
+- https://streamlit.io/
+- https://www.anaconda.com/products/distribution
+- https://huggingface.co/docs/transformers/index
