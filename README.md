@@ -2,7 +2,7 @@
 A demo on utilizing pre-trained language models to carry out abstractive summarization on conversations.
 
 ## Installation
-Firstly, clone the repository to a folder of your choice (after installing git).
+First, clone the repository to a folder of your choice (after installing git).
 
 Next install the necessary dependencies and libraries
 
