@@ -1,0 +1,5 @@
+fastapi==0.79
+transformers==4.20
+torch==1.10.2
+uvicorn
+psutil
