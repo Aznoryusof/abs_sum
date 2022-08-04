@@ -4,7 +4,8 @@ import sys
 main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(main_dir)
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from pydantic import Required
 
 
 SUMMARIZER_NAME = "bartmeeting"
@@ -32,7 +33,7 @@ def root():
 
 
 @app.post("/predict")
-def predict(text):
+def predict(text: str = Query(default=Required)):
 
     if(not(text)):
         raise HTTPException(status_code=400, 

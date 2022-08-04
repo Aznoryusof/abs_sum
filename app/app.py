@@ -105,7 +105,7 @@ def main(summarizer_name):
                     f"Enter text to summarize"
                 )
             else:
-                summarized_text = abs_summarizer.summarize("\n" + full_text)       
+                summarized_text = abs_summarizer.summarize(full_text)       
                 st.markdown("**Summarized Text:**\n" + summarized_text)
 
 
