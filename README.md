@@ -30,6 +30,29 @@ streamlit run app/app.py -- --model pegasus
 
 Currently for conversation summarization, the pre-trained "bartmeeting" option performs better. On the first startup of the app, it takes a while for the script to completely download all the model artifacts from the server. The download happens only for the first time the app runs on the machine.
 
+## API Deployment  
+Besides the Streamlit demo, the summarizer can also be deployed as an API in a docker container. You might need to increase the Memory limits used by Docker (via Docker Desktop -> Settings -> Resources -> Advanced -> Memory Slider) 
+
+To build the docker container run the following code in the main directory where the "Dockerfile" is located:
+```
+docker build -t abs_sum_api -f Dockerfile --no-cache .
+```
+
+Next, run the docker container (the model artifact will be downloaded from the online repository each time the container is created):
+```
+docker run -p 8000:8000 abs_sum_api
+```
+
+To check the running container, run the following code:
+```
+docker exec -it <insert_container_name> /bin/bash
+```
+
+Great, the API is now accessible on http://127.0.0.1:8000. To test out the API, go to http://127.0.0.1:8000/docs#. Fill in the text parameter to summarize to return the results! <br><br>.
+![image info](api_demo.JPG)
+
+
+
 ## Code Structure
 This section has some explanations about the different directories.
 - app: contains scripts and assets for the UI
@@ -42,4 +65,4 @@ For more information about the tools used, please refer to the following link:
 
 
 ## Version
-v1
+v1.1

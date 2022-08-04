@@ -5,6 +5,8 @@ main_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(main_dir)
 
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
+from summarizer.utils.clean_input_text import clean_input_text
+
 
 PEGASUS_MODEL = "sshleifer/distill-pegasus-cnn-16-4" 
 PEGASUS_TOKENIZER = "sshleifer/distill-pegasus-cnn-16-4"
@@ -23,8 +25,8 @@ class PegasusSummarizer:
 
 
     def summarize(self, text):
-        src_text = text
-        tokens = self.tokenizer(src_text, truncation=True, padding='longest', return_tensors='pt').to(self.torch_device)
+        text_clean = clean_input_text(text)
+        tokens = self.tokenizer(text_clean, truncation=True, padding='longest', return_tensors='pt').to(self.torch_device)
         summarized = self.model.generate(**tokens)
         summarized_text = self.tokenizer.batch_decode(summarized, skip_special_tokens=True)[0]
         
